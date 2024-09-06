@@ -32,4 +32,5 @@ The output of this pipeline is a .txt file with 5 or more columns.
 3. genome strand
 4. Region 1 end
 5. Region 1 start
-6 onwards (if the locus spans multiple exons): Locus end and start positions. 
+
+6. Onwards (if the locus spans multiple exons): Locus end and start positions. 
