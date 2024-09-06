@@ -1,8 +1,8 @@
 # Code for translating transcript-relative loci to genome-relative loci
 
-This repository contains the code used to translate transcript-relative loci (including the output of TargetFinder (https://github.com/carringtonlab/TargetFinder) into genome-relative loci. 
+This repository contains the code used to translate transcript-relative loci (including the output of TargetFinder (https://github.com/carringtonlab/TargetFinder) into genome-relative loci. If the transcript-relative locations span introns) the output will include multiple genome-relative regions. 
 
-## Script 01: Extracting exon information for loci transcripts
+## Script 01: Extracting exon information for loci transcripts (shell)
 - Extracts the exon structure of loci transcripts from a genome annotation GFF3 file. 
 - Splits the exon structure files into separate GFF3 files for transcripts on the negative and positive strand of the genome. 
 
@@ -13,8 +13,8 @@ This repository contains the code used to translate transcript-relative loci (in
 - A GFF3 file of transcript-relative loci you want to translate (loci_file)
 - A genome annotation GFF3 file (annotation_file)
 
-## Script 02: Translating the loci
-- Generates a txt file of genome-relative loci_file
+## Script 02: Translating the loci (R)
+- Generates a .txt file of genome-relative loci_file
 
 **Requirements:**
 - R with tidyr, plyr and dplyr packages installed
