@@ -5,6 +5,7 @@
 library(tidyr)
 library(plyr)
 library(dplyr)
+library(stringr)
 
 #################################
 ### Setting working directory ###
@@ -56,6 +57,7 @@ colnames(transcript_loci)[colnames(transcript_loci) == "V11"] <- "Tlength"
 # Converting the exon information into wide format #
 ####################################################
 
+positive_exon_info$transcript_id <- str_extract(positive_exon_info$transcript_id, "TraesCS\\w+\\.\\d+") # This line extracts the Traes ID from the longer notes field. This will need to be edited depending on the format of the notes field. 
 positive_exon_info <- positive_exon_info %>%
   mutate(chr_transcript_id = paste0(chr, ",", transcript_id))
 positive_exon_info_wide <- positive_exon_info %>%
@@ -67,13 +69,10 @@ positive_exon_info_wide <- positive_exon_info %>%
 
 positive_exon_info_wide <- separate(positive_exon_info_wide,col=chr_transcript_id,into=c('chr','transcript_id'),sep=',')
 
-positive_exon_info_wide <- separate(positive_exon_info_wide,col=transcript_id,into=c('col1','transcript_id'),sep='=')
-positive_exon_info_wide <- subset(positive_exon_info_wide, select = -c(col1) )
-positive_exon_info_wide$transcript_id <- trimws(positive_exon_info_wide$transcript_id)
-
 # Merging transcript and target info #
 ######################################
 
+transcript_loci <- unique(transcript_loci)
 positive_targetexon_info <- merge(transcript_loci,positive_exon_info_wide,by="transcript_id", all.x = FALSE, all.y = FALSE)
 
 # Translating the loci #
@@ -217,6 +216,7 @@ colnames(negative_exon_info)[colnames(negative_exon_info) == "V11"] <- "length"
 # Converting the exon information into wide format #
 ####################################################
 
+negative_exon_info$transcript_id <- str_extract(negative_exon_info$transcript_id, "TraesCS\\w+\\.\\d+") # This line extracts the Traes ID from the longer notes field. This will need to be edited depending on the format of the notes field. 
 negative_exon_info <- negative_exon_info %>%
   mutate(chr_transcript_id = paste0(chr, ",", transcript_id))
 negative_exon_info_wide <- negative_exon_info %>%
@@ -227,10 +227,6 @@ negative_exon_info_wide <- negative_exon_info %>%
   )
 
 negative_exon_info_wide <- separate(negative_exon_info_wide,col=chr_transcript_id,into=c('chr','transcript_id'),sep=',')
-
-negative_exon_info_wide <- separate(negative_exon_info_wide,col=transcript_id,into=c('col1','transcript_id'),sep='=')
-negative_exon_info_wide <- subset(negative_exon_info_wide, select = -c(col1) )
-negative_exon_info_wide$transcript_id <- trimws(negative_exon_info_wide$transcript_id)
 
 # Merging transcript and target info #
 ######################################
