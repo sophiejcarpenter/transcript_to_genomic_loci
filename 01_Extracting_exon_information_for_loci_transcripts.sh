@@ -102,7 +102,17 @@ sort -k9,9 -k4,4nr "$input_file.gff3" > "$output_file.gff3" #sorting exons by st
 input_file="$output_file"
 output_file="$input_file.3"
 
-awk 'BEGIN {FS = "\t"; exon_count = 0; last_tid = "" } $9 != last_tid { exon_count = 1 } $9 == last_tid { exon_count++ } { print $0, "\t" "exon_" exon_count; last_tid = $9 }' "$input_file.gff3" > "$output_file.gff3"
+awk -F'\t' '{
+    split($9, a, ";");
+    for (i in a) {
+        if (a[i] ~ /^rank=/) {
+            gsub(/rank=/, "", a[i]);
+            print $0 "\texon_" a[i];
+            next;
+        }
+    }
+    print $0 "\t-";
+}' "$input_file.gff3" > "$output_file.gff3"
 
 # Calculating negative strand exon lengths
 input_file="$output_file"
@@ -120,7 +130,17 @@ sort -k9,9 -k4,4n "$input_file.gff3" > "$output_file.gff3" #sorting exons by sta
 input_file="$output_file"
 output_file="$input_file.3"
 
-awk 'BEGIN {FS = "\t"; exon_count = 0; last_tid = "" } $9 != last_tid { exon_count = 1 } $9 == last_tid { exon_count++ } { print $0, "\t" "exon_" exon_count; last_tid = $9 }' "$input_file.gff3" > "$output_file.gff3"
+awk -F'\t' '{
+    split($9, a, ";");
+    for (i in a) {
+        if (a[i] ~ /^rank=/) {
+            gsub(/rank=/, "", a[i]);
+            print $0 "\texon_" a[i];
+            next;
+        }
+    }
+    print $0 "\t-";
+}' "$input_file.gff3" > "$output_file.gff3"
 
 # Calculating positive strand exon lengths
 input_file="$output_file"
